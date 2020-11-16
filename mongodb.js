@@ -1,8 +1,5 @@
 // MongoDB Operations
-// const mongodb = require('mongodb')
-// const MongoClient = mongodb.MongoClient
-
-const { MongoClient, ObjectID } = require('mongodb') 
+const { MongoClient, ObjectID } = require('mongodb')
 
 const id = new ObjectID();
 console.log(id)
@@ -16,34 +13,6 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     }
 
     const db = client.db(databaseName)
-
-       db.collection('users').insertOne({
-           _id: id,
-           name: 'Naomi',
-           age: 38
-       }, (error, result) => {
-           if (error) {
-               return console.log('Unable to insert a record')
-           }
-
-           console.log(result.ops)
-       })
-
-    //    db.collection('users').insertMany([
-    //        {
-    //            name: 'Max Pareira',
-    //            age: 39
-    //        },{
-    //            name: 'Noman Gonsalves',
-    //            age: 23
-    //        }
-    //    ], (error, result) => {
-    //        if (error) {
-    //            return console.log('Data could not be inserted')
-    //        }
-
-    //        console.log(result.ops)
-    //    })
 
     // db.collection('tasks').insertMany([
     //     {
@@ -63,4 +32,42 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     //     console.log(result.ops)
     // })
+
+    // findOne returns the first entry
+    // db.collection('users').findOne({ age: 38, name: 'Naomi'}, (error, user)=> {
+    //     if (error) {
+    //         return console.log('Could not fetch a record')
+    //     }
+
+    //     console.log(user)
+    // })
+
+    // // Search by ObjectID requires passing ID with new Object
+    // db.collection('users').findOne({ _id: new ObjectID("5fb26fc502bfcf664cf58b70") }, (error, user) => {
+    //     if (error) {
+    //         return console.log('Could not fetch a record')
+    //     }
+
+    //     console.log(user)
+    // })
+
+    // // find returns a cursor so that you can read the response accordingly
+    // db.collection('users').find({ age: 38 }).toArray((error, users) => {
+    //     console.log(users)
+    // })
+
+    // db.collection('users').find({ age: 38 }).count((error, count) => {
+    //     console.log(count)
+    // })
+    
+    db.collection('tasks').findOne({_id: new ObjectID("5fb27a0101a7dd2f547ab175")}, (error, task)=>{
+         if (error) {
+             return console.log('Could not find data')
+         }
+         console.log(task)
+    })
+
+    db.collection('tasks').find({ completed: false}).toArray((error, tasks)=> {
+        console.log(tasks)
+    })
 })
