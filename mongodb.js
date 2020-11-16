@@ -1,6 +1,11 @@
 // MongoDB Operations
-const mongodb = require('mongodb')
-const MongoClient = mongodb.MongoClient
+// const mongodb = require('mongodb')
+// const MongoClient = mongodb.MongoClient
+
+const { MongoClient, ObjectID } = require('mongodb') 
+
+const id = new ObjectID();
+console.log(id)
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
@@ -12,16 +17,17 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName)
 
-    //    db.collection('users').insertOne({
-    //        name: 'Bob Peter',
-    //        age: 38
-    //    }, (error, result) => {
-    //        if (error) {
-    //            return console.log('Unable to insert a record')
-    //        }
+       db.collection('users').insertOne({
+           _id: id,
+           name: 'Naomi',
+           age: 38
+       }, (error, result) => {
+           if (error) {
+               return console.log('Unable to insert a record')
+           }
 
-    //        console.log(result.ops)
-    //    })
+           console.log(result.ops)
+       })
 
     //    db.collection('users').insertMany([
     //        {
@@ -39,22 +45,22 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     //        console.log(result.ops)
     //    })
 
-    db.collection('tasks').insertMany([
-        {
-            description: 'Nodejs course',
-            completed: false
-        }, {
-            description: 'Docker course',
-            completed: false
-        }, {
-            description: 'Astro-physics course',
-            completed: false
-        }
-    ], (error, result) => {
-        if (error) {
-            return console.log('Data could not be inserted')
-        }
+    // db.collection('tasks').insertMany([
+    //     {
+    //         description: 'Nodejs course',
+    //         completed: false
+    //     }, {
+    //         description: 'Docker course',
+    //         completed: false
+    //     }, {
+    //         description: 'Astro-physics course',
+    //         completed: false
+    //     }
+    // ], (error, result) => {
+    //     if (error) {
+    //         return console.log('Data could not be inserted')
+    //     }
 
-        console.log(result.ops)
-    })
+    //     console.log(result.ops)
+    // })
 })
