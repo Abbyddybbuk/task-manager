@@ -59,15 +59,52 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     // db.collection('users').find({ age: 38 }).count((error, count) => {
     //     console.log(count)
     // })
-    
-    db.collection('tasks').findOne({_id: new ObjectID("5fb27a0101a7dd2f547ab175")}, (error, task)=>{
-         if (error) {
-             return console.log('Could not find data')
-         }
-         console.log(task)
+
+    // db.collection('tasks').findOne({_id: new ObjectID("5fb27a0101a7dd2f547ab175")}, (error, task)=>{
+    //      if (error) {
+    //          return console.log('Could not find data')
+    //      }
+    //      console.log(task)
+    // })
+
+    // db.collection('tasks').find({ completed: false}).toArray((error, tasks)=> {
+    //     console.log(tasks)
+    // })
+
+    // db.collection('users').updateOne({
+    //     _id: new ObjectID("5fb26eda69a3ad4da4f5b2f2")
+    // }, {
+    //     $set: {
+    //         name: 'Ankur'
+    //     }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
+    // db.collection('users').updateOne({
+    //     _id: new ObjectID("5fb26eda69a3ad4da4f5b2f2")
+    // }, {
+    //     $inc: {
+    //         age: -1
+    //     }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
+
+    db.collection('tasks').updateMany({
+        completed: false
+    }, {
+        $set: {
+            completed: true
+        }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     })
 
-    db.collection('tasks').find({ completed: false}).toArray((error, tasks)=> {
-        console.log(tasks)
-    })
+
 })
