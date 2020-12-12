@@ -9,6 +9,7 @@ app.use(express.json())
 
 const port = process.env.PORT || 3000
 
+// User App Endpoints
 app.post('/users', (req, res) => {
     const user = new User(req.body)
 
@@ -41,6 +42,8 @@ app.get('/users/:id', (req, res) => {
     })
 })
 
+
+// TASK App Endpoints
 app.post('/tasks', (req, res) => {
     const myTask = new Task(req.body)
 
@@ -52,8 +55,8 @@ app.post('/tasks', (req, res) => {
 })
 
 app.get('/tasks', (req, res) => {
-    Task.find().then((users) => {
-        res.status(202).send(users)
+    Task.find().then((tasks) => {
+        res.status(202).send(tasks)
     }).catch((error) => {
         res.status(500).send('No data found')
     })
@@ -63,6 +66,10 @@ app.get('/tasks/:id', (req, res) => {
     const _id = req.params.id
 
     Task.findById(_id).then((task) => {
+        if (!task) {
+            return res.status(404).send('No data found')
+        }
+
         res.status(202).send(task)
     }).catch((error) => {
         res.status(500).send('No data found')
