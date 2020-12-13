@@ -17,7 +17,9 @@ const updateAgeAndCount = async (id, age) => {
     return { user: user, count: count }
 }
 
-updateAgeAndCount('5fd4f484cc4bb934e0349eb3', 32).then((resultObject)=>{
-  console.log('Updated User: ' + resultObject.user)
-  console.log('Total number of records as per supplied age: ' + resultObject.count)
+updateAgeAndCount('5fd4f484cc4bb934e0349eb3', 32).then((resultObject) => {
+    console.log('Updated User: ' + resultObject.user)
+    console.log('Total number of records as per supplied age: ' + resultObject.count)
+}).catch((error) => {
+    console.log(error)
 })
