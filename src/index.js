@@ -5,6 +5,8 @@ const User = require('./models/user')
 const Task = require('./models/task')
 
 const app = express()
+
+// to get the input payload json
 app.use(express.json())
 
 const port = process.env.PORT || 3000
