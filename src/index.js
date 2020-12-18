@@ -48,6 +48,18 @@ app.get('/users/:id', async (req, res) => {
     }
 })
 
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+        if (!user) {
+            return res.status(404).send('No data found to be deleted')
+        }
+        res.status(202).send(user)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
 app.patch('/users/:id', async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'age', 'email', 'password']
@@ -96,6 +108,41 @@ app.get('/tasks/:id', async (req, res) => {
 
     try {
         const task = await Task.findById(_id)
+        if (!task) {
+            return res.status(404).send('No data found')
+        }
+        res.status(202).send(task)
+    } catch (error) {
+        res.status(500).send('No data found')
+    }
+})
+
+app.delete('/tasks/:id', async(req, res)=> {
+    try {
+      const task = await Task.findByIdAndDelete(req.params.id)
+
+      if (!task) {
+          return res.status(404).send('No data found to be deleted')
+      }
+
+      res.status(202).send(task)
+    } catch(error) {
+       res.status(500).send('Internal Server Error')
+    }
+})
+
+app.patch('/tasks/:id', async (req, res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['description', 'completed']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid Payload sent' })
+    }
+
+
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
         if (!task) {
             return res.status(404).send('No data found')
         }
