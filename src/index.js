@@ -37,11 +37,11 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const myFunction = async () => {
 
-    const token = jwt.sign({ _id: 'Abhijeet@123' }, 'ThisIsMySignature', { expiresIn: '1 day' })
-    console.log(token)
+    // const token = jwt.sign({ _id: 'Abhijeet@123' }, 'ThisIsMySignature', { expiresIn: '1 day' })
+    // console.log(token)
 
-    const decipheredToken = jwt.verify(token, 'ThisIsMySignature')
-    console.log(decipheredToken)
+    // const decipheredToken = jwt.verify(token, 'ThisIsMySignature')
+    // console.log(decipheredToken)
     // const password = 'Test@12345'
     // const hashedPassword = await bcrypt.hash(password, 8)
 
@@ -69,4 +69,4 @@ const main = async () => {
     console.log(user.tasks)
 }
 
-main()
+// main()
