@@ -57,6 +57,19 @@ userSchema.methods.generateAuthToken = async function () {
     return token
 }
 
+// What we are doing here is re-writing the standard toJSON function which is changing
+// the way User model is exposed in all entities; here because of delete password and token
+// password and tokens object will not be part of JSON being thrown as response
+userSchema.methods.toJSON = function() {
+    const user = this
+    
+    const userObject = user.toObject()
+    
+    delete userObject.password
+    delete userObject.tokens
+    return userObject
+}
+
 userSchema.statics.findByCrendentials = async (email, password) => {
     console.log(email)
     const user = await User.findOne({ email: email })
