@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Task = require('./task')
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -46,6 +47,16 @@ const userSchema = new mongoose.Schema({
             }
         }
     ]
+})
+
+// This is how you define relationship between two models virtually (Not on DB)
+// ref refers to the foreign entity/model
+//localfield refers to which field from this entity(in this case User) would be used to estabilish relationship
+//foreignfield refers to which field from the ref entity is being used for estabilishing relationship
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
 })
 
 userSchema.methods.generateAuthToken = async function () {
@@ -93,6 +104,16 @@ userSchema.pre('save', async function (next) {
     }
 
     console.log('User: Before save got executed')
+
+    next()
+})
+
+
+// In case a user gets deleted; his or her tasks will also get deleted
+userSchema.pre('remove', async function (next) {
+    const user = this
+    
+    await Task.deleteMany({owner: user._id})
 
     next()
 })
