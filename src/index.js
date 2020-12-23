@@ -8,14 +8,14 @@ const taskRouter = require('./routers/task')
 
 const app = express()
 
-app.use((req, res, next) => {
-    console.log('This middleware by express needs to be declared above other routers')
-    if (req.method === 'GET') {
-        res.send('GET requests are not allowed')
-    } else {
-        next()
-    }
-})
+// app.use((req, res, next) => {
+//     console.log('This middleware by express needs to be declared above other routers')
+//     if (req.method === 'GET') {
+//         res.send('GET requests are not allowed')
+//     } else {
+//         next()
+//     }
+// })
 
 // app.use((req, res, next) => {
 //     console.log('This middleware by express needs to be declared above other routers')
