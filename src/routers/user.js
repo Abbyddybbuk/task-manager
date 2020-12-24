@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 const auth = require('../middleware/auth')
-
+const multer = require('multer')
 // User App Endpoints
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
@@ -15,6 +15,16 @@ router.post('/users', async (req, res) => {
         res.status(400).send(error)
     }
 })
+
+//configure multer for user avatar
+const userUpload = multer({
+    dest: 'avatars'
+})
+
+router.post('/users/me/avatar', userUpload.single('avatar'), (req, res) => {
+    res.send()
+})
+
 
 router.post('/users/login', async (req, res) => {
     try {

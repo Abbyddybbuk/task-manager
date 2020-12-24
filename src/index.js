@@ -54,6 +54,26 @@ const myFunction = async () => {
 
 myFunction()
 
+const multer = require('multer')
+
+// configure multer
+const upload = multer({
+    dest: 'images'//Folder where documents will be uploaded
+})
+
+app.post('/upload', upload.single('upload'), (req, res) => {
+    res.send()
+})
+
+//configure multer for user avatar
+const userUpload = multer({
+    dest: 'avatars'
+})
+
+app.post('/users/me/avatar', userUpload.single('avatar'), (req, res) => {
+    res.send()
+})
+
 const Task = require('./models/task')
 const User = require('./models/user')
 
