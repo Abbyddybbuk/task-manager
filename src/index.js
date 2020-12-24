@@ -58,15 +58,15 @@ const Task = require('./models/task')
 const User = require('./models/user')
 
 const main = async () => {
-    const task = await Task.findById('5fe322a1b87b0a14942b4359')
+    const task = await Task.findById('5fe3897726b84363a80e455b')
     // In order to fetch the complete details of the owner from User model, you just have to define ref: 'User' in your task model
     // now use populate method to get details from User model
     await task.populate('owner').execPopulate()
     console.log(task)
 
-    const user = await User.findById('5fe3215a45870f4f0cf8183d')
+    const user = await User.findById('5fe418dfe2a8cb3ff0a959c7')
     await user.populate('tasks').execPopulate()
     console.log(user.tasks)
 }
 
-// main()
+main()
