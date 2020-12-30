@@ -44,6 +44,22 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
     res.status(202).send({message: 'Image Deleted'})
 })
 
+router.get('/users/:id/avatar', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        
+        if (!user || !user.avatar) {
+            throw new Error('No Image found for the requested user')
+        }
+
+        res.set('Content-Type', 'image/jpg')
+        res.send(user.avatar)
+    } catch(error) {
+
+    }
+    res.status(202).send({message: 'Image Deleted'})
+})
+
 
 router.post('/users/login', async (req, res) => {
     try {
