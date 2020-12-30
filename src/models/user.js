@@ -47,7 +47,10 @@ const userSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ]
+    ],
+    avatar: {
+        type: Buffer
+    }
 }, {
     timestamps: true
 })
@@ -64,9 +67,9 @@ userSchema.virtual('tasks', {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({_id: user._id.toString()}, 'ThisIsMySignature')
+    const token = jwt.sign({ _id: user._id.toString() }, 'ThisIsMySignature')
 
-    user.tokens = user.tokens.concat({token: token})
+    user.tokens = user.tokens.concat({ token: token })
     await user.save()
     return token
 }
@@ -74,11 +77,11 @@ userSchema.methods.generateAuthToken = async function () {
 // What we are doing here is re-writing the standard toJSON function which is changing
 // the way User model is exposed in all entities; here because of delete password and token
 // password and tokens object will not be part of JSON being thrown as response
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
     const user = this
-    
+
     const userObject = user.toObject()
-    
+
     delete userObject.password
     delete userObject.tokens
     return userObject
@@ -115,8 +118,8 @@ userSchema.pre('save', async function (next) {
 // In case a user gets deleted; his or her tasks will also get deleted
 userSchema.pre('remove', async function (next) {
     const user = this
-    
-    await Task.deleteMany({owner: user._id})
+
+    await Task.deleteMany({ owner: user._id })
 
     next()
 })
