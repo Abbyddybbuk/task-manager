@@ -58,21 +58,24 @@ const multer = require('multer')
 
 // configure multer
 const upload = multer({
-    dest: 'images'//Folder where documents will be uploaded
+    dest: 'images',//Folder where documents will be uploaded
+    limits: {
+        fileSize: 10000000
+    },
+    // File Filter is used to put filters on file being uploaded
+    fileFilter(req, file, cb) {//cb is callback function
+        if (!file.originalname.match(/\.(doc|docx)$/)) {
+            return cb(new Error('Please upload a word document'))
+        }
+
+        cb(undefined, true)
+    }
 })
 
 app.post('/upload', upload.single('upload'), (req, res) => {
     res.send()
 })
 
-//configure multer for user avatar
-const userUpload = multer({
-    dest: 'avatars'
-})
-
-app.post('/users/me/avatar', userUpload.single('avatar'), (req, res) => {
-    res.send()
-})
 
 const Task = require('./models/task')
 const User = require('./models/user')
