@@ -1,12 +1,26 @@
 const sgMail = require('@sendgrid/mail')
 
-const sendgridAPIKey = 'SG.rN6Qei0gitVfZm6IBpw.Fwh7xShonaShonaShonaShonaDuCpf0vYd_it3YI'
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-sgMail.setApiKey(sendgridAPIKey)
+const sendWelcomeEmail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'abhijeet.abap@gmail.com',
+        subject: 'Thanks for joining in my App!',
+        text: `Welcome come to the app ${name}. Hope you will enjoy this experience`
+    })
+}
 
-sgMail.send({
-    to: 'abhijeet.abap@gmail.com',
-    from: 'abhijeet.abap@gmail.com',
-    subject: 'This is my first mail via Sendgrid',
-    text: 'Sending this mail; This is part of my Node.js learning'
-})
+const sendCancellationEmail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'abhijeet.abap@gmail.com',
+        subject: 'I am sad that you are leaving us',
+        text: `Please tell us ${name} what could have stopped you from leaving us`
+    })
+}
+
+module.exports = {
+    sendWelcomeEmail,
+    sendCancellationEmail
+}

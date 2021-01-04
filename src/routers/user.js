@@ -1,15 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const sharp = require('sharp')
+// const sharp = require('sharp')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
 const multer = require('multer')
+const { sendWelcomeEmail, sendCancellationEmail } = require('../emails/account')
+
 // User App Endpoints
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
 
     try {
         await user.save()
+        sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
     } catch (error) {
@@ -32,7 +35,8 @@ const userUpload = multer({
 })
 
 router.post('/users/me/avatar', auth, userUpload.single('avatar'), async (req, res) => {
-    const buffer = await sharp(req.file.buffer).resize({width: 400, height: 400}).png().toBuffer()
+    // const buffer = await sharp(req.file.buffer).resize({width: 400, height: 400}).png().toBuffer()
+    const buffer = req.file.buffer
     req.user.avatar = buffer
     await req.user.save()
     res.send()
@@ -129,6 +133,7 @@ router.delete('/users/me', auth, async (req, res) => {
         //     return res.status(404).send('No data found to be deleted')
         // }
         await req.user.remove()
+        sendCancellationEmail(req.user.email, req.user.name)
         res.status(202).send(req.user)
     } catch (error) {
         res.status(500).send(error)
